@@ -36,6 +36,21 @@ export default class GeoTargeting extends React.Component {
         };
     }
 
+    debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    };
+
     refreshAllCities() {
         const promise = GeoService.getAllCities('city_name', false).then(allCities => {
             this.setState({
@@ -109,7 +124,21 @@ then(selectedIds => {
         return this.state.selectedGeoIds.indexOf(item.geoId) >= 0;
     }
 
+    componentWillMount() {
+        this.handleGeoSearchChangedFeatchResults = this.debounce(
+            this.handleGeoSearchChangedFeatchResults.bind(this), 500);
+     }
+
     handleGeoSearchChanged(newSearch) {
+        this.setState({
+            searchText: newSearch
+        });
+        this.handleGeoSearchChangedFeatchResults(newSearch);
+    }
+
+    handleGeoSearchChangedFeatchResults(newSearch) {
+        console.log(newSearch);
+
         if (newSearch !== undefined) {
             this.setState({
                 searchText: newSearch

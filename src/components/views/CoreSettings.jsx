@@ -85,6 +85,13 @@ export default class CoreSettings extends React.Component {
     render() {
         return (
             <div>
+
+                <label>Recommendations</label>
+                <Recommendations
+                    recommendationType='CAMPAIGN_CORE_SETTINGS_RECOMMENDATIONS'
+                    campaignId={this.props.campaignId}
+                />
+
                 <InputForm isError={this.state.isError} isSaving={this.state.isSaving} isLoading={this.state.isLoading} onSubmit={this.handleSaveButtonClicked} onRetry={this.handleRetry}>
                     <InputField label="Name">
                         <input type='text' value={this.state.model.name} name='name' onChange={this.handleInputChange}/>
@@ -96,11 +103,7 @@ export default class CoreSettings extends React.Component {
                         <input type='text' value={this.state.model.dailyBudget} name='dailyBudget' onChange={this.handleInputChange}/>
                     </InputField>
                 </InputForm>
-                <label>Recommendations</label>
-                <Recommendations
-                    recommendationType='CAMPAIGN_CORE_SETTINGS_RECOMMENDATIONS'
-                    campaignId={this.props.campaignId}
-                />
+
             </div>
         );
     }

@@ -90,11 +90,46 @@ export default class Recommendations extends React.Component {
                 }));
         }
     }
+    removeRecommendation(event) {
+        event.currentTarget.classList.add('disabled');
+        event.currentTarget.setAttribute('disabled','true');
+
+        let recId= event.currentTarget.dataset.recid;
+        let recommendations = this.state.recommendations;
+        let recomndationLength = recommendations.length;
+        let selectedRecomondation= {};
+       
+        for(let index=0; index< recomndationLength; index++){
+            if(recommendations[index].id==recId){
+                selectedRecomondation=recommendations[index];
+                recommendations.splice(index,1);
+                break;
+            }
+        }
+        CancelOnUnmount.track(this, CampaignAdFormatRecommendationService
+            .dismissRecommendation(this.props.campaignId,event.currentTarget.dataset.recid )
+            .then(recommendation => {
+                this.setState({ recommendations: recommendations })
+            })
+            .catch(() => {
+                alert('Couldn\'t remove recommendation, please try again.');
+        }));
+        
+    }
 
     renderSingleRecommendation(id, recommendationText) {
+
+        let removeRecButton = null;
+        if (this.props.recommendationType === 'CAMPAIGN_CORE_SETTINGS_RECOMMENDATIONS') {
+            removeRecButton =<div className="recommendations__remove-rec-btn-holder"><button data-recid={id} onClick={this.removeRecommendation.bind(this)}>X</button></div>;
+        }
+
         return (
             <div key={id} className="recommendations__single">
+                {removeRecButton}
+                <div className="recommendations__text-block">
                 {recommendationText}
+                </div>
             </div>
         );
     }
@@ -107,12 +142,12 @@ export default class Recommendations extends React.Component {
         } else {
             return (
                 <div className="recommendations">
-                    <div>
+                    <div className="recommendations__container">
                         {this.state.recommendations.map(r => this.renderSingleRecommendation(r.id, r.text, r.username))}
                     </div>
-                    <div>
+                    <div className="recommendations__add-container">
                         <div>
-                            <textarea value={this.state.newRecommendationText} onChange={this.handleTextAreaChanged}/>
+                            <textarea className='recommendations__textarea-margin' value={this.state.newRecommendationText} onChange={this.handleTextAreaChanged}/>
                         </div>
                         <div>
                             <button onClick={this.handleAddRecommendation}>Add</button>

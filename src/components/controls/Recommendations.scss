@@ -1,10 +1,43 @@
 @import '../../main';
 
 .recommendations {
+
   .recommendations__single {
-    border: 1px black solid;
     background: white;
-    margin: 4px;
     padding: 4px;
+    width: 25%;
+    margin-right: 25px;
+  }
+
+  .recommendations__text-block{
+    height: 100px;
+    overflow: hidden;
+    overflow-y: scroll;
+    border: 1px black solid;
+    padding: 10px;
+  }
+
+  .recommendations__remove-rec-btn-holder{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .recommendations__container{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .recommendations__textarea-margin{
+    margin: 25px 0px;
+    height: 100px;
+    width: 25%;
+  }
+
+  .recommendations__add-container{
+    margin: 15px 0px;
+  }
+  button:disabled,  button.disadisabledble:focus, button.disabled:active,button.disabled:hover{
+    cursor: default;
+    background: #ccc;
   }
 }
+
