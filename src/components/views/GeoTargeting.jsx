@@ -22,7 +22,8 @@ export default class GeoTargeting extends React.Component {
         this.handleGeoSearchChanged = this.handleGeoSearchChanged.bind(this);
         this.handleRetry = this.handleRetry.bind(this);
         this.initialCityLoad = this.initialCityLoad.bind(this);
-
+        this.handleGeoSearchChangedFeatchResults = this.debounce(
+            this.handleGeoSearchChangedFeatchResults.bind(this), 500);
 
         this.state = {
             isError: false,
@@ -123,11 +124,6 @@ then(selectedIds => {
     handleGetIsGeoChecked(item) {
         return this.state.selectedGeoIds.indexOf(item.geoId) >= 0;
     }
-
-    componentWillMount() {
-        this.handleGeoSearchChangedFeatchResults = this.debounce(
-            this.handleGeoSearchChangedFeatchResults.bind(this), 500);
-     }
 
     handleGeoSearchChanged(newSearch) {
         this.setState({
